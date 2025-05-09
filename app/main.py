@@ -82,3 +82,4 @@ def review_endpoint(review: Review):
         readability_score=readability_score,
         suggestions=suggestions
     )
+
