@@ -14,9 +14,17 @@ app = FastAPI(
 )
 
 # Simulated positive and negative words for sentiment
-POSITIVE_WORDS = {"good", "great", "excellent", "love", "amazing"}
-NEGATIVE_WORDS = {"bad", "terrible", "awful", "hate", "poor"}
+POSITIVE_WORDS = {
+    "good", "great", "excellent", "love", "amazing", "nice", "fantastic", "wonderful", "perfect",
+    "awesome", "delightful", "enjoyable", "pleasant", "positive", "superb", "outstanding", "incredible",
+    "fabulous", "satisfying", "brilliant", "terrific", "valuable", "recommend", "happy", "loved"
+}
 
+NEGATIVE_WORDS = {
+    "bad", "terrible", "awful", "hate", "poor", "disappointing", "horrible", "worst", "annoying",
+    "unpleasant", "negative", "boring", "mediocre", "problematic", "waste", "low", "frustrating",
+    "dirty", "broken", "defective", "difficult", "unhappy", "slow", "unreliable"
+}
 class Review(BaseModel):
     content: str = Field(..., example="I love this product! It's excellent and easy to use.")
 
@@ -26,7 +34,10 @@ class Feedback(BaseModel):
     suggestions: str = Field(..., example="Looks good!")
 
 def analyze_sentiment(text: str) -> str:
-    words = text.lower().split()
+    import string
+    # Normalize text: lowercase + remove punctuation
+    text = text.lower().translate(str.maketrans('', '', string.punctuation))
+    words = text.split()
     pos_count = sum(1 for word in words if word in POSITIVE_WORDS)
     neg_count = sum(1 for word in words if word in NEGATIVE_WORDS)
     if pos_count > neg_count:
@@ -71,4 +82,3 @@ def review_endpoint(review: Review):
         readability_score=readability_score,
         suggestions=suggestions
     )
-
