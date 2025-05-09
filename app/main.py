@@ -8,8 +8,8 @@ app = FastAPI(
     version="1.0.0",
     contact={
         "name": "Víctor Fernando",
-        "email": "tu_email@dominio.com",
-        "url": "https://github.com/tu_usuario"
+        "email": "vicf045@gmail.com",
+        "url": "https://github.com/victor045"
     }
 )
 
@@ -53,6 +53,10 @@ def generate_suggestions(text: str) -> str:
         suggestions.append("Looks good!")
     return " ".join(suggestions)
 
+@app.get("/")
+def root():
+    return {"message": "✅ API de análisis de reseñas está activa."}
+
 @app.post("/review", response_model=Feedback, summary="Analiza una reseña de producto", tags=["Reviews"])
 def review_endpoint(review: Review):
     if not review.content:
@@ -67,3 +71,4 @@ def review_endpoint(review: Review):
         readability_score=readability_score,
         suggestions=suggestions
     )
+
